@@ -1,34 +1,31 @@
-function encryptCesar(text, shift) {
-    let result = "";
+function encryptBinary(text) {
+    let binaryText = '';
     for (let i = 0; i < text.length; i++) {
-        let char = text[i];
-        if (char.match(/[a-z]/i)) {
-            let code = text.charCodeAt(i);
-            if (char === char.toLowerCase()) {
-                char = String.fromCharCode(((code - 97 + shift) % 26) + 97);
-            } else {
-                char = String.fromCharCode(((code - 65 + shift) % 26) + 65);
-            }
-        }
-        result += char;
+        const charCode = text.charCodeAt(i);
+        const binary = charCode.toString(2); // Converte o caractere para binário
+        binaryText += binary + ' '; // Adiciona espaço para separar os caracteres binários
     }
-    return result;
+    return binaryText;
 }
 
-function decryptCesar(text, shift) {
-    return encryptCesar(text, 26 - shift);
+function decryptBinary(binaryText) {
+    const binaryArray = binaryText.trim().split(' '); // Divide os caracteres binários
+    let decryptedText = '';
+    for (const binary of binaryArray) {
+        const charCode = parseInt(binary, 2); // Converte o binário de volta para o código de caractere
+        decryptedText += String.fromCharCode(charCode);
+    }
+    return decryptedText;
 }
 
 document.getElementById("encryptButton").addEventListener("click", function () {
     const plaintext = document.getElementById("plaintext").value;
-    const shift = 3; // O valor de deslocamento da cifra de César
-    const encryptedText = encryptCesar(plaintext, shift);
+    const encryptedText = encryptBinary(plaintext);
     document.getElementById("encryptedText").textContent = encryptedText;
 });
 
 document.getElementById("decryptButton").addEventListener("click", function () {
     const ciphertext = document.getElementById("ciphertext").value;
-    const shift = 3; // O mesmo valor de deslocamento usado para criptografar
-    const decryptedText = decryptCesar(ciphertext, shift);
+    const decryptedText = decryptBinary(ciphertext);
     document.getElementById("decryptedText").textContent = decryptedText;
 });
